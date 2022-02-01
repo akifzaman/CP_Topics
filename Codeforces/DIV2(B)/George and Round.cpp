@@ -32,133 +32,6 @@ template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag, tree_ord
 const double pi = acos(-1.0);
 const ll INF = 1000000000000000000;
 
-long long M = 1e9+7;
-long long power(long long a, long long p)
-{
-    if(p==0) return 1;
-    long long ans= power(a,p/2);
-    ans =(ans * ans) % M;
-    if(p%2) ans = (ans*a) % M;
-    return ans;
-}
-ll nC2(ll n){
-    return (n*(n-1))/2;
-}
-ll fact(ll n){
-    if(n==0 || n==1){
-        return 1;
-    }
-    else{
-        return n*fact(n-1);
-    }
-}
-ll countOne(ll n){
-    return __builtin_popcount(n);
-}
-ll checkParity(ll n){ //returns true if number of setbit is odd
-    return __builtin_parity(n);
-}
-ll digitCount(ll n){
-    return floor(log10(n))+1;
-}
-long long log2(long long x)
-{
-	long long res = 0;
-	while (x >>= 1)
-		res++;
-	return res;
-}
-ll isPowerof2(ll x)
-{
-    return (x && !(x & x-1));
-}
-
-bool is_prime(ll n) {
-    // Assumes that n is a positive natural number
-    // We know 1 is not a prime number
-    if (n == 1) {
-        return false;
-    }
-
-    ll i = 2;
-    // This will loop from 2 to int(sqrt(x))
-    while (i*i <= n) {
-        // Check if i divides x without leaving a remainder
-        if (n % i == 0) {
-            // This means that n has a factor in between 2 and sqrt(n)
-            // So it is not a prime number
-            return false;
-        }
-        i += 1;
-    }
-    // If we did not find any factor in the above loop,
-    // then n is a prime number
-    return true;
-}
-
-//sieve of arestothenes, creating vector of primes
-const ll N = 1e6 + 1;
-vector<ll> prime;
-bool vis[N];
-void sieveSolve()
-{
-	for(ll i = 3; i*i<=N; i+=2)
-	{
-		if(!vis[i])
-		{
-			for(ll j = i*i; j<=N; j += 2*i)
-				vis[j] = true;
-		}
-	}
-	prime.push_back(2LL);
-	for(ll i = 3; i<N; i += 2)
-		if(!vis[i]) prime.emplace_back(i);
-}
-
-const ll MAX = 1000000;
-ll prefix[MAX + 1];
-
-//(L->R)range er moddhe koyta prime ache shetar jonno buildPrefix()+query()
-void buildPrefix()
-{
-
-	bool prime[MAX + 1];
-	memset(prime, true, sizeof(prime));
-
-	for (ll p = 2; p * p <= MAX; p++) {
-		if (prime[p] == true) {
-			for (ll i = p * 2; i <= MAX; i += p)
-				prime[i] = false;
-		}
-	}
-	prefix[0] = prefix[1] = 0;
-	for (ll p = 2; p <= MAX; p++) {
-		prefix[p] = prefix[p - 1];
-		if (prime[p])
-			prefix[p]++;
-	}
-}
-ll query(ll L, ll R)
-{
-	return prefix[R] - prefix[L - 1];
-}
-
-//from 2^0 to 2^31~(10^9)
-ll val[31]={1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
-            65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216,
-            33554432, 67108864, 134217728, 268435456, 536870912,1073741824};
-
-ll GCD(ll a[],ll m){
-    ll p=0,gcd=0;
-    while(1){
-        if(p>=m){
-            return gcd;
-        }
-        gcd =__gcd(__gcd(a[p],a[p+1]),gcd);
-        p+=2;
-    }
-}
-
 void solve(){
     ll n,m,cnt=0;
     cin>>n>>m;
@@ -170,7 +43,6 @@ void solve(){
     for(ll i=0;i<n;i++){
         cin>>arr[i];
     }
-    ll maxi=*max_element(arr, arr+n);
     sort(arr, arr+n);
     for(ll i=0;i<m;i++){
         ll x;
@@ -178,22 +50,31 @@ void solve(){
         brr[i]=x;
         mp[x]++;
     }
+    ll r1=mp.size();
     for(ll i=0;i<n;i++){
-        if(mp[arr[i]]>0){
-
-        }
-        else if(mp[arr[i]]==0){
-            for(ll j=0;j<=maxi;j++){
-                if(j>brr[i]){
-                    mp[j]++;
+        cout<<mp.size()<<endl;
+        if(mp[arr[i]]==0){
+            for(ll j=0;j<m;j++){
+                if(brr[j]>arr[i] && mp[brr[j]]>0){
+                    mp[brr[j]]--;
                     cnt++;
                     continue;
+                }
+                else{
+                    cout<<arr[i]<<"******"<<endl;
+                    mp[arr[i]]++;
+                    cnt++;
                 }
                 //cnt++;
             }
         }
     }
-    cout<<cnt<<endl;
+    for(ll i=0;i<m;i++){
+        cout<<mp[brr[i]]<<" ";
+    }
+    cout<<endl;
+    ll r2=mp.size();
+    cout<<r2<<" "<<r1<<" "<<r2-r1<<endl;
 }
 int main()
 {
