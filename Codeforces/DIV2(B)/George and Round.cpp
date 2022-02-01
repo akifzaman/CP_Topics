@@ -75,6 +75,7 @@ void solve(){
     cout<<endl;
     ll r2=mp.size();
     cout<<r2<<" "<<r1<<" "<<r2-r1<<endl;
+    //cout<<"hello"<<endl;
 }
 int main()
 {
