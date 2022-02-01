@@ -35,27 +35,37 @@ const ll N = 1e6 + 1;
 
 
 void solve(){
-    ll n, maxi=INT_MIN,cnt=0;
+    ll n;
     cin>>n;
-    vector <vector<ll>> v(n+10);
-    for(ll i=1;i<=n;i++){
+    vector < pair<ll,ll> > v;
+    map <ll, pair<ll,ll>> ans;
+    set<ll> s;
+    for(ll i=0;i<n;i++){
         ll x;
         cin>>x;
-        v[x].pb(i);
-        maxi=max(maxi,x);
+        v.pb(make_pair(x,i));
     }
-    for(ll i=1;i<=maxi;i++){
-        if(v[i].size()>0){
-            cnt++;
+    sort(v.begin(), v.end());
+    ll cnt=0, dif=0;
+    //cout<<v.size()<<endl;
+    for(ll i=0;i<v.size();i++){
+        if(v[i].first==v[i+1].first){
+            dif=abs(v[i+1].second-v[i].second);
+            s.insert(dif);
+        }
+        else{
+            if(s.size()<=1){
+                cnt++;
+                ans[i]=(make_pair(v[i].first,dif));
+            }
+            dif=0;
+            s.clear();
         }
     }
     cout<<cnt<<endl;
-    for(ll i=1;i<=maxi;i++){
-        if(v[i].size()>1){
-            cout<<i<<" "<<v[i][1]-v[i][0]<<endl;
-        }
-        else if(v[i].size()==1){
-            cout<<i<<" 0"<<endl;
+    for(ll i=0;i<ans.size();i++){
+        if(ans[i].first!=0){
+            cout<<ans[i].first<<" "<<ans[i].second<<endl;
         }
     }
     return;
