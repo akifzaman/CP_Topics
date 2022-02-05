@@ -37,45 +37,25 @@ void solve(){
     cin>>n>>m;
 
     ll arr[n]={0};
-    ll brr[n]={0};
-    map <ll,ll> mp;
+    ll brr[m]={0};
 
     for(ll i=0;i<n;i++){
         cin>>arr[i];
     }
-    sort(arr, arr+n);
     for(ll i=0;i<m;i++){
-        ll x;
-        cin>>x;
-        brr[i]=x;
-        mp[x]++;
+        cin>>brr[i];
     }
-    ll r1=mp.size();
+    ll j=0;
     for(ll i=0;i<n;i++){
-        cout<<mp.size()<<endl;
-        if(mp[arr[i]]==0){
-            for(ll j=0;j<m;j++){
-                if(brr[j]>arr[i] && mp[brr[j]]>0){
-                    mp[brr[j]]--;
-                    cnt++;
-                    continue;
-                }
-                else{
-                    cout<<arr[i]<<"******"<<endl;
-                    mp[arr[i]]++;
-                    cnt++;
-                }
-                //cnt++;
+        while(j<m){
+            if(brr[j]>=arr[i]){
+                cnt++;
+                i++;
             }
+            j++;
         }
     }
-    for(ll i=0;i<m;i++){
-        cout<<mp[brr[i]]<<" ";
-    }
-    cout<<endl;
-    ll r2=mp.size();
-    cout<<r2<<" "<<r1<<" "<<r2-r1<<endl;
-    //cout<<"hello"<<endl;
+    cout<<max(1LL*0, n-cnt)<<endl;
 }
 int main()
 {
